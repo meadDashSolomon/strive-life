@@ -51,10 +51,6 @@ export default function Login() {
         id,
       });
 
-      // *** TEMPORARY AUTH DEBUGGING TECH DEBT ***
-      // document.cookie = `username=${username}`;
-      // document.cookie = `password=${password}`;
-
       //setup react router to landing
       console.log(resp.headers);
       console.log("Server response in Login.tsx:", resp.data);
