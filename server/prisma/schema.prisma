@@ -1,0 +1,108 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id                Int             @id @default(autoincrement())
+  email             String
+  name              String
+  age               Int?
+  equipment         Boolean?
+  experience        Int?
+  goals             String?
+  height            Int?
+  online_status     Boolean?
+  password          String
+  profile_pic       String?
+  sex               String?
+  trainer           Boolean?
+  username          String
+  weight            Int?
+  access            String?
+  ai_chats          AiChat[]
+  Comment           Comment[]
+  received_messages DirectMessage[] @relation("ReceivedMessages")
+  sent_messages     DirectMessage[] @relation("SentMessages")
+  PastWorkout       PastWorkout[]
+  posts             Post[]
+}
+
+model Post {
+  id         Int       @id @default(autoincrement())
+  title      String
+  body       String
+  created_at DateTime  @default(now())
+  updated_at DateTime  @updatedAt
+  user_id    Int
+  comments   Comment[]
+  photos     Photo[]
+  user       User      @relation(fields: [user_id], references: [id])
+}
+
+model Comment {
+  id         Int      @id @default(autoincrement())
+  body       String
+  user_id    Int
+  post_id    Int
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+  post       Post     @relation(fields: [post_id], references: [id])
+  user       User     @relation(fields: [user_id], references: [id])
+}
+
+model Photo {
+  id      Int    @id @default(autoincrement())
+  post_id Int
+  url     String
+  post    Post   @relation(fields: [post_id], references: [id])
+}
+
+model AiChat {
+  id           Int             @id @default(autoincrement())
+  user_id      Int
+  created_at   DateTime        @default(now())
+  user         User            @relation(fields: [user_id], references: [id])
+  chat_history AiChatHistory[]
+}
+
+model AiChatHistory {
+  id         Int      @id @default(autoincrement())
+  ai_chat_id Int
+  created_at DateTime @default(now())
+  message    String
+  is_ai      Boolean
+  ai_chat    AiChat   @relation(fields: [ai_chat_id], references: [id])
+}
+
+model DirectMessage {
+  id           Int      @id @default(autoincrement())
+  created_at   DateTime @default(now())
+  sender_id    Int
+  recipient_id Int
+  chat         String
+  recipient    User     @relation("ReceivedMessages", fields: [recipient_id], references: [id])
+  sender       User     @relation("SentMessages", fields: [sender_id], references: [id])
+}
+
+model Exercise {
+  id            Int         @id @default(autoincrement())
+  exercise_name String
+  set           Int
+  rep           Int
+  created_at    DateTime    @default(now())
+  pastWorkoutId Int
+  pastWorkout   PastWorkout @relation(fields: [pastWorkoutId], references: [id])
+}
+
+model PastWorkout {
+  id         Int        @id @default(autoincrement())
+  user_id    Int
+  created_at DateTime   @default(now())
+  exercise   Exercise[]
+  user       User       @relation(fields: [user_id], references: [id])
+}
