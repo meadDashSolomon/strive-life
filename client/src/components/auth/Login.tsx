@@ -8,12 +8,11 @@ import { useNavigate } from "react-router-dom";
 
 export default function Login() {
   const { auth, setAuth } = useContext(AuthContext);
-  console.log("Login.tsx setAuth: ", setAuth);
   const [inputs, setInputs] = useState({});
   const navigate = useNavigate();
 
   const handleSignupClick = () => {
-    document.location.href = "/signup";
+    navigate("/signup");
   };
 
   const handleChange = (e) => {

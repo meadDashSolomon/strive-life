@@ -15,8 +15,6 @@ export const AuthProvider = ({ children }) => {
     localStorage.setItem("auth", JSON.stringify(auth));
   }, [auth]);
 
-  console.log("auth::::::", auth);
-
   useEffect(() => {
     // Read the new cookies
     const accessToken = Cookie.getCookie("accessToken");
@@ -57,14 +55,18 @@ export const AuthProvider = ({ children }) => {
     }
   }, []);
 
-  // debug
-  useEffect(() => {
-    console.log("Auth state changed:", auth);
-  }, [auth]);
+  const logout = () => {
+    // Clear auth state
+    setAuth({});
 
-  console.log("AuthProvider setAuth: ", setAuth);
+    // Clear localStorage and cookies
+    localStorage.removeItem("auth");
+    Cookie.deleteCookie("accessToken");
+    Cookie.deleteCookie("refreshToken");
+  };
+
   return (
-    <AuthContext.Provider value={{ auth, setAuth }}>
+    <AuthContext.Provider value={{ auth, setAuth, logout }}>
       {children}
     </AuthContext.Provider>
   );

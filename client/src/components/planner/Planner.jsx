@@ -9,7 +9,6 @@ const Planner = ({ number }) => {
   const [workoutType, setWorkoutType] = useState("SELECT WORKOUT TYPE");
   const exModalRef = useRef(null);
   const user = useContext(AuthContext);
-  console.log("Planner component render, auth:", user);
 
   const getExercises = () => {
     axios

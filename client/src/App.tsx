@@ -1,18 +1,19 @@
 import "./App.css";
 import Auth from "./components/auth/index";
 import Login from "./components/auth/Login.tsx";
+import LogoutRoute from "./components/auth/LogoutRoute.tsx";
 import Social from "./components/social/index";
 import Notfound from "./components/notfound";
 import Planner from "./components/planner/Planner.jsx";
 import Tracker from "./components/tracker/index";
-import { BrowserRouter, Routes, Route, redirect } from "react-router-dom";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 import "./App.css";
 import DMs from "./components/chat/index.tsx";
-import { useEffect, useContext } from "react";
+import { useContext } from "react";
 import AuthContext from "./components/auth/context/AuthProvider.tsx";
 
 function App() {
-  const { auth } = useContext(AuthContext);
+  const { auth, logout } = useContext(AuthContext);
 
   return (
     <div className="absolute bg-neutral top-0 w-full h-full p-0">
@@ -37,6 +38,13 @@ function App() {
           href="/social">
           Clubhouse
         </a>
+        {auth?.username && (
+          <a
+            className="btn btn-ghost text-primary hover:bg-accent hover:text-primary normal-case text-xl"
+            href="/logout">
+            Log Out
+          </a>
+        )}
       </div>
       <div className="flex">
         <div className="grow">
@@ -44,13 +52,11 @@ function App() {
             <Routes>
               <Route
                 path="/"
-                element={
-                  auth?.username ? <redirect to="/planner" /> : <Login />
-                }
+                element={auth?.username ? <Planner /> : <Login />}
               />
               <Route
                 path="/signup"
-                element={auth?.username ? <redirect to="/planner" /> : <Auth />}
+                element={auth?.username ? <Planner /> : <Auth />}
               />
               <Route
                 path="social"
@@ -64,8 +70,10 @@ function App() {
                 path="tracker"
                 element={<Tracker number={3} />}
               />
-
-              {/* New Routes Go ABOVE this line */}
+              <Route
+                path="/logout"
+                element={<LogoutRoute logout={logout} />}
+              />
               <Route
                 path="*"
                 element={<Notfound />}
