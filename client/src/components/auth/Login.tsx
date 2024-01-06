@@ -23,7 +23,6 @@ export default function Login() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log(inputs);
 
     const username = inputs.username;
     const password = inputs.password;
@@ -42,17 +41,7 @@ export default function Login() {
       const accessToken = resp?.data?.accessToken;
       const id = resp?.data?.id;
 
-      console.log("LOGIN BEFORE CALL::::::", auth);
       setAuth({ username, accessToken, id });
-      console.log("Login successful, setting auth:", {
-        username,
-        accessToken,
-        id,
-      });
-
-      //setup react router to landing
-      console.log(resp.headers);
-      console.log("Server response in Login.tsx:", resp.data);
 
       document.location.href = "/planner";
       setAuth({ username, accessToken, id });

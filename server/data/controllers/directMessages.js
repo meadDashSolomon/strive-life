@@ -1,21 +1,28 @@
-const models = require('../models');
+const models = require("../models");
 const prisma = models.db;
 
 module.exports.fetchDirectMessages = async (req, res) => {
   try {
-    const { currentUserId, otherUserId } = req.body;
+    const currentUsername = req.query.currentUsername;
+    const friendUsername = req.query.friendUsername;
+
     const messages = await prisma.directMessage.findMany({
       where: {
-        AND: [
-          { sender_id: currentUserId, recipient_id: otherUserId },
-          { sender_id: otherUserId, recipient_id: currentUserId },
+        OR: [
+          {
+            sender_username: currentUsername,
+            recipient_username: friendUsername,
+          },
+          {
+            sender_username: friendUsername,
+            recipient_username: currentUsername,
+          },
         ],
       },
-      orderBy: { created_at: "desc" },
+      orderBy: { created_at: "asc" },
     });
-    console.log("MODEL SUCCESSFULLY FOUND MESSAGES",
-      messages
-    );
+
+    console.log("MODEL SUCCESSFULLY FOUND MESSAGES", messages);
     res.send(messages);
   } catch (err) {
     console.log("CONTROLLER ERROR GETTING DMS:::::", err);
@@ -25,19 +32,25 @@ module.exports.fetchDirectMessages = async (req, res) => {
 
 module.exports.sendMessage = async (req, res) => {
   try {
-    const { currentUserId, otherUserId, chat } = req.body;
+    const { sender_username, recipient_username, chat } = req.body;
+
     const newMessage = await prisma.directMessage.create({
       data: {
-        sender_id: currentUserId,
-        recipient_id: otherUserId,
-        chat: chat,
+        chat,
+        sender: {
+          connect: { username: sender_username },
+        },
+        recipient: {
+          connect: { username: recipient_username },
+        },
       },
     });
+
     console.log("MODEL SUCCESSFULLY SAVED MESSAGE", newMessage);
-    res.sendStatus(400);
-    return;
+
+    res.status(201).json(newMessage);
   } catch (err) {
     console.error(err);
     res.sendStatus(500);
   }
-}
+};

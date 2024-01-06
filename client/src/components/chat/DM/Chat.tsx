@@ -1,3 +1,4 @@
+import { useParams } from "react-router-dom";
 import "../../../App.css";
 import DirectMessageList from "./DMList";
 import DirectMessageSender from "./DMSender";
@@ -5,25 +6,20 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 
 interface ChatProps {
-  currentUserId: number;
-  otherUserId: number;
+  currentUsername: string;
 }
 
-const Chat: React.FC<ChatProps> = (currentUserId, otherUserId) => {
+const Chat: React.FC<ChatProps> = ({ currentUsername }) => {
   // state for posting messages
   const [messageContent, setMessageContent] = useState("");
   // state for holding list of messages
   const [messages, setMessages] = useState<string[]>([]);
+  const { friendUsername } = useParams();
 
-  // helper function
-  const fetchMessages = (
-    endpoint: string,
-    currentUserId: number,
-    otherUserId: number
-  ) => {
+  const fetchMessages = () => {
     axios
       .get(
-        `${endpoint}?currentUserId=${currentUserId}&otherUserId=${otherUserId}`,
+        `http://localhost:8080/social?currentUsername=${currentUsername}&friendUsername=${friendUsername}`,
         { withCredentials: true }
       )
       .then((res) => {
@@ -34,23 +30,29 @@ const Chat: React.FC<ChatProps> = (currentUserId, otherUserId) => {
       });
   };
 
-  // fetch messages on new user id
-  // useEffect(() => {
-  //   fetchMessages("/social", currentUserId, otherUserId);
-  //   fetchMessages("/planner", currentUserId, otherUserId);
-  //   fetchMessages("/tracker", currentUserId, otherUserId);
-  // }, [currentUserId, otherUserId]);
+  // fetch messages on new user name
+  useEffect(() => {
+    if (currentUsername && friendUsername) {
+      fetchMessages();
+    }
+  }, [currentUsername, friendUsername]);
+
+  if (!friendUsername) {
+    return (
+      <div className="">Select a user from the dropdown to start chatting.</div>
+    );
+  }
 
   return (
     <div className="flex-row">
       <DirectMessageList
-        currentUserId={currentUserId}
-        otherUserId={otherUserId}
+        currentUsername={currentUsername}
+        friendUsername={friendUsername}
         messages={messages}
       />
       <DirectMessageSender
-        currentUserId={currentUserId}
-        otherUserId={otherUserId}
+        currentUsername={currentUsername}
+        friendUsername={friendUsername}
         setMessages={setMessages}
         messageContent={messageContent}
         setMessageContent={setMessageContent}

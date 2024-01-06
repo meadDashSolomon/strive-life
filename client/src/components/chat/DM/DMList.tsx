@@ -1,35 +1,18 @@
 interface Message {
   id: number;
-  sender_id: number;
-  recipient_id: number;
+  sender_username: string;
+  recipient_username: string;
   chat: string;
   created_at: string;
 }
 
-// ***----- DIRECT MESSAGE LIST COMPONENT -----***
 const DirectMessageList: React.FC<{
-  currentUserId: number;
+  currentUsername: string;
   messages?: Message[];
-}> = ({ currentUserId, messages }) => {
-  // dummy data for before backend is working properly
-  if (messages === undefined || messages.length === 0) {
-    messages = [
-      {
-        id: 1,
-        sender_id: 1,
-        recipient_id: 2,
-        chat: "Hi! How are you?",
-        created_at: "1000-01-01 00:00:00",
-      },
-      {
-        id: 2,
-        sender_id: 2,
-        recipient_id: 1,
-        chat: "GREAT!",
-        created_at: "1000-01-01 00:00:00",
-      },
-    ];
-    currentUserId = 1;
+}> = ({ currentUsername, messages }) => {
+  // Check if there are messages to display
+  if (!messages || messages.length === 0) {
+    return <div className="chat-empty">No messages yet.</div>;
   }
 
   return (
@@ -38,14 +21,14 @@ const DirectMessageList: React.FC<{
         <div
           key={msg.id}
           className={`chat-bubble ${
-            msg.sender_id === currentUserId
+            msg.sender_username === currentUsername
               ? "self-end bg-accent text-primary"
               : "self-start bg-neutral text-primary"
           }`}>
           <p>{msg.chat}</p>
           <div className="chat-metadata">
             <p className="text-xs font-thin">
-              {msg.sender_id === currentUserId ? "You" : "Them"}
+              {msg.sender_username === currentUsername ? "You" : "Other"}
             </p>
             <p className="text-xs font-thin">
               {new Date(msg.created_at).toLocaleString()}

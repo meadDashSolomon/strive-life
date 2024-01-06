@@ -1,8 +1,8 @@
 import { useState, useEffect } from "react";
-import "../../../App.css";
-import GPTList from "./GPTList";
-import GPTSender from "./GPTSender";
-import GPT from "./gptRoutes";
+import "../../App.css";
+import GPTList from "./subcomponents/GPTList";
+import GPTSender from "./subcomponents/GPTSender";
+import GPT from "./subcomponents/gptRoutes";
 
 interface dmList {
   id: number;
@@ -14,9 +14,9 @@ interface dmList {
 
 const GPTChat: React.FC<{
   dmList: dmList[];
-  currentUserId: number;
+  currentUsername: string;
   chatID: number;
-}> = ( {currentUserId, chatID} ) => {
+}> = ({ currentUsername, chatID }) => {
   const [dmList, setDmList] = useState([]);
 
   useEffect(() => {
@@ -27,7 +27,7 @@ const GPTChat: React.FC<{
       .catch((err) => {
         console.error(err);
       });
-  }, [currentUserId, chatID]);
+  }, [currentUsername, chatID]);
 
   return (
     <div className="flex-row">
@@ -39,6 +39,7 @@ const GPTChat: React.FC<{
         chatID={chatID}
         dmList={dmList}
         setDmList={setDmList}
+        currentUsername={currentUsername}
       />
     </div>
   );

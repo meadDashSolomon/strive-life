@@ -1,12 +1,10 @@
 import React from "react";
-import gpt from "../../GPT/gptRoutes";
-import AuthContext from "../../../auth/context/AuthProvider";
-const GptDropdownMenu = ({ setAiChatId, setAiChatTrue }) => {
+import gpt from "../subcomponents/gptRoutes";
+const GptDropdownMenu = ({ setAiChatId, currentUsername }) => {
   const [data, setData] = React.useState([]);
-  const user = React.useContext(AuthContext);
 
   React.useEffect(() => {
-    gpt.fetchGptList(3).then((res) => {
+    gpt.fetchGptList(currentUsername).then((res) => {
       setData(res);
     });
   }, []);
@@ -18,10 +16,9 @@ const GptDropdownMenu = ({ setAiChatId, setAiChatTrue }) => {
 
   const handleNewChat = () => {
     try {
-      gpt.createGpt(3).then((res) => {
+      gpt.createGpt(currentUsername).then((res) => {
         const formatedres = { id: res };
         setData([...data, formatedres]);
-        setAiChatTrue(true);
         setAiChatId(res);
       });
     } catch (err) {
@@ -30,7 +27,6 @@ const GptDropdownMenu = ({ setAiChatId, setAiChatTrue }) => {
   };
 
   const handleChatSelect = (chatId) => {
-    setAiChatTrue(true);
     setAiChatId(chatId);
   };
 
@@ -44,7 +40,7 @@ const GptDropdownMenu = ({ setAiChatId, setAiChatTrue }) => {
     }
   };
   if (!data) {
-    return <div>Loading...</div>;
+    return <div>Loading . . . </div>;
   }
 
   return (
@@ -52,7 +48,7 @@ const GptDropdownMenu = ({ setAiChatId, setAiChatTrue }) => {
       <label
         tabIndex={0}
         className="btn btn-ghost rounded-btn">
-        AI
+        Select Chat
       </label>
       <ul
         tabIndex={0}
@@ -79,7 +75,7 @@ const GptDropdownMenu = ({ setAiChatId, setAiChatTrue }) => {
               </svg>
               <span>{chat.id}</span>
               <button
-                class="btn btn-sm btn-outline btn-secondary"
+                className="btn btn-sm btn-outline btn-secondary"
                 onClick={() => handleChatDelete(chat.id)}>
                 X
               </button>

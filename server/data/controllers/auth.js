@@ -6,7 +6,6 @@ require("dotenv").config();
 // secure flag for development vs production
 const isSecure = process.env.NODE_ENV === "production";
 module.exports.loginUser = async (req, res) => {
-  console.log("COOKIES", req.cookies);
   const { username, password } = req.body;
   if (!username || !password)
     return res

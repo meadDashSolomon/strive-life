@@ -21,7 +21,7 @@ model User {
   profile_pic       String?
   sex               String?
   trainer           Boolean?
-  username          String
+  username          String @unique
   weight            Int?
   access            String?
   ai_chats          AiChat[]
@@ -64,9 +64,9 @@ model Photo {
 
 model AiChat {
   id           Int             @id @default(autoincrement())
-  user_id      Int
+  username      String
   created_at   DateTime        @default(now())
-  user         User            @relation(fields: [user_id], references: [id])
+  user         User            @relation(fields: [username], references: [username])
   chat_history AiChatHistory[]
 }
 
@@ -80,14 +80,16 @@ model AiChatHistory {
 }
 
 model DirectMessage {
-  id           Int      @id @default(autoincrement())
-  created_at   DateTime @default(now())
-  sender_id    Int
-  recipient_id Int
-  chat         String
-  recipient    User     @relation("ReceivedMessages", fields: [recipient_id], references: [id])
-  sender       User     @relation("SentMessages", fields: [sender_id], references: [id])
+  id                  Int      @id @default(autoincrement())
+  created_at          DateTime @default(now())
+  chat                String
+  sender_username     String
+  recipient_username  String
+  recipient           User     @relation("ReceivedMessages", fields: [recipient_username], references: [username])
+  sender              User     @relation("SentMessages", fields: [sender_username], references: [username])
 }
+
+
 
 model Exercise {
   id            Int         @id @default(autoincrement())

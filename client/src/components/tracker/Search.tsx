@@ -29,8 +29,9 @@ const Search: React.FC<SearchProps> = ({ setter }) => {
   function enterHit(evt: React.KeyboardEvent<HTMLInputElement>) {
     if (evt.key === "Enter") {
       evt.preventDefault();
-      if (evt.currentTarget.value.length > 0) {
-        apiCall(searchVal)
+      const trimmedSearchVal = searchVal.trim();
+      if (trimmedSearchVal.length > 0) {
+        apiCall(trimmedSearchVal)
           .then((data) => {
             setExList(data.data);
           })
@@ -51,10 +52,14 @@ const Search: React.FC<SearchProps> = ({ setter }) => {
     let i = -1;
     return (
       <>
-        {exList.map((ex) => {
+        {exList.map((ex, index) => {
           return (
             <>
-              <option value={`${(i += 1)}`}>{ex.name}</option>
+              <option
+                key={index}
+                value={`${(i += 1)}`}>
+                {ex.name}
+              </option>
             </>
           );
         })}

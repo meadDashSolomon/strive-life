@@ -34,20 +34,8 @@ export const AuthProvider = ({ children }) => {
         )
         .then((resp) => {
           const { username, accessToken: newAccessToken, id } = resp?.data;
-          // debug username on toolbar
-          console.log("Setting auth state:", {
-            username,
-            accessToken: newAccessToken,
-            id,
-          });
 
-          console.log("Before setting auth:", auth);
           setAuth({ username, accessToken: newAccessToken, id });
-          console.log("After setting auth:", {
-            username,
-            accessToken: newAccessToken,
-            id,
-          });
         })
         .catch((err) => {
           console.log("Error during authentication:", err);

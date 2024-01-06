@@ -77,11 +77,10 @@ const Tracker: React.FC<TrackerProps> = ({ number }) => {
 
   useEffect(() => {
     axios
-      .get(
-        import.meta.env.VITE_SERVER_TRACKER_URL,
-        { params: { num: number } },
-        { withCredentials: true }
-      )
+      .get(import.meta.env.VITE_SERVER_TRACKER_URL, {
+        params: { num: number },
+        withCredentials: true,
+      })
       .then((data) => {
         let arr = [];
         data.data.forEach((val) => {

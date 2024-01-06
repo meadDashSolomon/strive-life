@@ -6,9 +6,10 @@ import Social from "./components/social/index";
 import Notfound from "./components/notfound";
 import Planner from "./components/planner/Planner.jsx";
 import Tracker from "./components/tracker/index";
+import DMs from "./components/chat/index.tsx";
+import GPTDMs from "./components/GPT/index.tsx";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import "./App.css";
-import DMs from "./components/chat/index.tsx";
 import { useContext } from "react";
 import AuthContext from "./components/auth/context/AuthProvider.tsx";
 
@@ -37,6 +38,16 @@ function App() {
           className="btn btn-ghost text-primary hover:bg-accent hover:text-primary normal-case text-xl"
           href="/social">
           Clubhouse
+        </a>
+        <a
+          className="btn btn-ghost text-primary hover:bg-accent hover:text-primary normal-case text-xl"
+          href="/dm/">
+          Chat
+        </a>
+        <a
+          className="btn btn-ghost text-primary hover:bg-accent hover:text-primary normal-case text-xl"
+          href="/ai">
+          AI
         </a>
         {auth?.username && (
           <a
@@ -75,15 +86,43 @@ function App() {
                 element={<LogoutRoute logout={logout} />}
               />
               <Route
+                path="/dm/"
+                element={
+                  auth?.username ? (
+                    <DMs currentUsername={auth.username} />
+                  ) : (
+                    <Login />
+                  )
+                }
+              />
+              <Route
+                path="/dm/:friendUsername"
+                element={
+                  auth?.username ? (
+                    <DMs currentUsername={auth.username} />
+                  ) : (
+                    <Login />
+                  )
+                }
+              />
+              <Route
+                path="/ai"
+                element={
+                  auth?.username ? (
+                    <GPTDMs currentUsername={auth.username} />
+                  ) : (
+                    <Login />
+                  )
+                }
+              />
+              <Route
                 path="*"
                 element={<Notfound />}
               />
             </Routes>
           </BrowserRouter>
         </div>
-        <div className="p-4 bg-neutral">
-          <DMs />
-        </div>
+        <div className="p-4 bg-neutral"></div>
       </div>
     </div>
   );

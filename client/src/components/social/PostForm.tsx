@@ -12,10 +12,6 @@ declare global {
   }
 }
 
-// PLACEHOLDER
-const session = {
-  userID: 0,
-};
 const URL = import.meta.env.VITE_SERVER_URL + "/posts";
 function PostForm() {
   const [title, setTitle] = React.useState("");
@@ -38,9 +34,8 @@ function PostForm() {
       title,
       body,
       photos,
-      user_id: user.auth.id,
+      id: user.auth.id,
     };
-    console.log(user.auth);
     axios
       .post(URL, post, { withCredentials: true })
       .then(() => {

@@ -1,29 +1,44 @@
-import React from "react";
-import GptDropDownMenu from "./GPT/GptDropdown"; // Replace the path with the actual location of DropdownMenu.js
-import ChatDropdownMenu from "./Chat/DmDropdown";
+import React, { useEffect, useState } from "react";
+import ChatDropdownMenu from "./DmDropdown";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
-const ChatSelectHeader = ({ setAiChatId, setAiChatTrue }) => {
-  const chatData = [
-    { name: "Chat 1", profilePictureUrl: "profile1.jpg" },
-    { name: "Chat 2", profilePictureUrl: "profile2.jpg" },
-    // Add more chat objects as needed
-  ];
+const ChatSelectHeader = () => {
+  const [users, setUsers] = useState([]);
+  const [selectedUsername, setSelectedUsername] = useState("");
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    axios
+      .get("http://localhost:8080/users")
+      .then((response) => {
+        setUsers(response.data);
+      })
+      .catch((error) => {
+        console.error("Error fetching user data:", error);
+      });
+  }, []);
+
+  const handleChatSelect = (username) => {
+    setSelectedUsername(username);
+    navigate(`/dm/${username}`);
+  };
 
   return (
     <div className="navbar bg-base-300 rounded-box">
       <div className="flex-1 px-2 lg:flex-none">
-        <a className="text-lg font-bold">Chat</a>
+        <span className="text-lg font-bold">Chat</span>
+        {selectedUsername && (
+          <span className="mx-2">with {selectedUsername}</span>
+        )}
       </div>
       <div className="flex justify-end flex-1 px-2">
         <div className="flex items-stretch">
           <ChatDropdownMenu
-            title="DMs"
-            data={chatData}
-            setAiChatTrue={setAiChatTrue}></ChatDropdownMenu>
-          <GptDropDownMenu
-            title="GPT"
-            setAiChatId={setAiChatId}
-            setAiChatTrue={setAiChatTrue}></GptDropDownMenu>
+            title="Friends"
+            data={users}
+            onChatSelect={handleChatSelect}
+          />
         </div>
       </div>
     </div>

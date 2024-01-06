@@ -3,89 +3,73 @@ import "../../../App.css";
 
 interface Message {
   id: number;
-  sender_id: number;
-  recipient_id: number;
+  sender_username: string;
+  recipient_username: string;
   chat: string;
   created_at: string;
 }
 
 interface DirectMessageSenderProps {
-  currentUserId: number;
-  otherUserId: number;
-  setMessages: (messages: Message[]) => void;
+  currentUsername: string;
+  friendUsername: string;
+  setMessages: React.Dispatch<React.SetStateAction<Message[]>>;
   messageContent: string;
-  setMessageContent: (messageContent: string) => void;
+  setMessageContent: React.Dispatch<React.SetStateAction<string>>;
 }
 
-// helper function
-const sendMessageAndFetch = (
-  endpoint: string,
-  currentUserId: number,
-  otherUserId: number,
-  messageContent: string,
-  setMessages: (messages: Message[]) => void
-) => {
-  axios
-    .post(
-      endpoint,
-      {
-        sender_id: currentUserId,
-        recipient_id: otherUserId,
-        chat: messageContent,
-      },
-      { withCredentials: true }
-    )
-    .then((res) => {
-      setMessageContent("");
-    })
-    .catch((err) => {
-      console.error(err);
-    });
-
-  axios
-    .get(
-      `${endpoint}?currentUserId=${currentUserId}&otherUserId=${otherUserId}`
-    )
-    .then((res) => {
-      setMessages(res.data);
-    })
-    .catch((err) => {
-      console.error(err);
-    });
-};
-
-// ***----- DIRECT MESSAGE SENDER COMPONENT -----***
 const DirectMessageSender: React.FC<DirectMessageSenderProps> = ({
-  currentUserId,
-  otherUserId,
+  currentUsername,
+  friendUsername,
   setMessages,
   messageContent,
   setMessageContent,
 }) => {
   const handleSubmit = (event: React.FormEvent) => {
     event.preventDefault();
+    if (messageContent.trim()) {
+      sendMessage(
+        currentUsername,
+        friendUsername,
+        messageContent,
+        setMessages,
+        setMessageContent
+      );
+    }
+  };
 
-    sendMessageAndFetch(
-      "/social",
-      currentUserId,
-      otherUserId,
-      messageContent,
-      setMessages
-    );
-    sendMessageAndFetch(
-      "/planner",
-      currentUserId,
-      otherUserId,
-      messageContent,
-      setMessages
-    );
-    sendMessageAndFetch(
-      "/tracker",
-      currentUserId,
-      otherUserId,
-      messageContent,
-      setMessages
-    );
+  const sendMessage = (
+    currentUsername: string,
+    friendUsername: string,
+    messageContent: string,
+    setMessages: React.Dispatch<React.SetStateAction<Message[]>>,
+    setMessageContent: React.Dispatch<React.SetStateAction<string>>
+  ) => {
+    axios
+      .post(
+        "http://localhost:8080/social",
+        {
+          sender_username: currentUsername,
+          recipient_username: friendUsername,
+          chat: messageContent,
+        },
+        { withCredentials: true }
+      )
+      .then((response) => {
+        setMessageContent("");
+        setMessages((prevMessages) => [
+          ...prevMessages,
+          {
+            id: response.data.id,
+            sender_username: currentUsername,
+            recipient_username: friendUsername,
+            chat: messageContent,
+            created_at: new Date().toISOString(),
+          },
+        ]);
+      })
+      .catch((err) => {
+        console.error(err);
+      });
   };
 
   return (

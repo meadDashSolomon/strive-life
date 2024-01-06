@@ -1,4 +1,4 @@
-const models = require('../models');
+const models = require("../models");
 const prisma = models.db;
 
 module.exports.getPosts = async (req, res) => {
@@ -6,92 +6,109 @@ module.exports.getPosts = async (req, res) => {
     let posts = await prisma.post.findMany({
       orderBy: [
         {
-          created_at: 'desc'
-        }
+          created_at: "desc",
+        },
       ],
       take: 5,
       include: {
         photos: {
           orderBy: {
-            id: 'asc'
-          }
+            id: "asc",
+          },
         },
         user: {
           select: {
             username: true,
-            profile_pic: true
-          }
-        }
-      }
+            profile_pic: true,
+            id: true,
+          },
+        },
+      },
     });
     res.send(posts);
-  } catch(err) {
+  } catch (err) {
     console.error(err);
     res.sendStatus(500);
   }
-}
+};
 
 module.exports.postComment = async (req, res) => {
-  console.log(req.body)
-  if (!req.body.body || !req.body.user_id || !req.body.post_id) {
+  const { body, user_id, post_id } = req.body;
+
+  if (!body || !user_id || !post_id) {
     res.sendStatus(400);
     return;
   }
-  await prisma.comment.create({data: req.body}).then((response) => {
+
+  try {
+    await prisma.comment.create({
+      data: {
+        body: body,
+        user: {
+          connect: { id: user_id },
+        },
+        post: {
+          connect: { id: post_id },
+        },
+      },
+    });
     res.sendStatus(201);
-  }).catch((err) => {
+  } catch (err) {
+    console.error("Error posting comment", err);
     res.sendStatus(500);
-    console.error(err);
-  })
-}
+  }
+};
 
 module.exports.getComments = async (req, res) => {
-  if (!req.query.id) {
+  const postId = parseInt(req.query.id);
+  const skip = parseInt(req.query.skip) || 0;
+  const take = parseInt(req.query.take) || 5;
+
+  if (!postId) {
     res.sendStatus(400);
     return;
   }
-  req.query.id = parseInt(req.query.id);
-  req.query.skip = parseInt(req.query.skip);
-  req.query.take = parseInt(req.query.take);
-  await prisma.comment.findMany({
-    where: {
-      post_id: req.query.id
-    },
-    orderBy: [
-      {
-        created_at: 'desc'
-      }
-    ],
-    skip: req.query.skip || 0,
-    take: req.query.take || 5,
-    include: {
-      user: {
-        select: {
-          username: true,
-          profile_pic: true,
-        }
-      }
-    }
-  }).then((response) => {
-    res.send(response);
-  }).catch((err) => {
+
+  try {
+    const comments = await prisma.comment.findMany({
+      where: { post_id: postId },
+      orderBy: { created_at: "desc" },
+      skip: skip,
+      take: take,
+      include: {
+        user: {
+          select: {
+            id: true,
+            username: true,
+            profile_pic: true,
+          },
+        },
+      },
+    });
+    res.send(comments);
+  } catch (err) {
+    console.error("Error fetching comments", err);
     res.sendStatus(500);
-    console.error(err);
-  })
-}
+  }
+};
 
 module.exports.postPost = async (req, res) => {
+  const { title, body, user_id } = req.body;
   let photos = req.body.photos;
-  delete req.body.photos;
-  console.log(req.body)
-  await prisma.post.create({data: req.body})
-  .then((response)=>{
-    res.status(201)
-    res.send()
-  })
-  .catch((err)=>{
-    res.sendStatus(500);
-    console.log('Post not accepted')
-    console.log(err.message)
-  })
-}
+
+  try {
+    await prisma.post.create({
+      data: {
+        title: title,
+        body: body,
+        user: {
+          connect: { id: user_id },
+        },
+      },
+    });
+    res.status(201).send();
+  } catch (err) {
+    console.error("Post not accepted", err);
+    res.status(500).send("Error creating post");
+  }
+};
