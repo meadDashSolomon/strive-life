@@ -1,7 +1,6 @@
 const express = require("express");
 const morgan = require("morgan");
 const cors = require("cors");
-const verifyJWT = require("./middleware/verifyJWT");
 const bodyParser = require("body-parser");
 const gpt = require("./data/controllers/gpt.js");
 const app = express();
@@ -40,9 +39,6 @@ app.use(bodyParser.json());
 
 app.use("/auth", authControllers.loginUser);
 app.post("/register", usersControllers.registerUser);
-
-//PROTECTED ROUTES
-// app.use(verifyJWT);
 
 app.use("/gpt", gpt());
 

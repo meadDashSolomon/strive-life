@@ -49,23 +49,15 @@ const Search: React.FC<SearchProps> = ({ setter }) => {
   }
 
   function renderDropdown() {
-    let i = -1;
-    return (
-      <>
-        {exList.map((ex, index) => {
-          return (
-            <>
-              <option
-                key={index}
-                value={`${(i += 1)}`}>
-                {ex.name}
-              </option>
-            </>
-          );
-        })}
-      </>
-    );
+    return exList.map((ex, index) => (
+      <option
+        key={index}
+        value={index}>
+        {ex.name}
+      </option>
+    ));
   }
+
   return (
     <div className="m-auto">
       <input

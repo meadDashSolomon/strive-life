@@ -10,7 +10,7 @@ interface exercisePlus {
   rep: number;
 }
 
-const TrackerModal = ({ addWorkout, u_id }) => {
+const TrackerModal = ({ addWorkout, currentUsername }) => {
   const [currSets, setCurrSets] = useState<number>(0);
   const [currReps, setCurrReps] = useState<number>(0);
   const [currExercise, setCurrExercise] = useState<exercise>();
@@ -35,15 +35,14 @@ const TrackerModal = ({ addWorkout, u_id }) => {
   const postWorkout = () => {
     axios
       .post(
-        import.meta.env.VITE_SERVER_TRACKER_URL,
+        `${import.meta.env.VITE_SERVER_URL}/tracker`,
         {
-          user_id: u_id,
+          username: currentUsername,
           exercises: exerciseList,
         },
         { withCredentials: true }
       )
       .then((data) => {
-        console.log("post workouts then");
         console.log(data);
       })
       .catch((err) => {
@@ -53,7 +52,6 @@ const TrackerModal = ({ addWorkout, u_id }) => {
 
   return (
     <>
-      {/* You can open the modal using ID.showModal() method */}
       <button
         className="btn"
         onClick={() => window.my_modal_3.showModal()}>
@@ -95,13 +93,11 @@ const TrackerModal = ({ addWorkout, u_id }) => {
               </div>
             </div>
             <div className="text-left pl-4 overflow-auto h-[200px] w-3/5">
-              {exerciseList.map((val) => {
-                return (
-                  <div>
-                    {val.exercise.name} : {val.set} x {val.rep}
-                  </div>
-                );
-              })}
+              {exerciseList.map((val, index) => (
+                <div key={index}>
+                  {val.exercise.name} : {val.set} x {val.rep}
+                </div>
+              ))}
             </div>
           </div>
           <button

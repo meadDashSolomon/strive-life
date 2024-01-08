@@ -2,7 +2,8 @@ import React, { useState, useEffect, useRef, useContext } from "react";
 import axios from "axios";
 import Workouts from "./subcomponents/Workouts.jsx";
 import AuthContext from "../auth/context/AuthProvider";
-const Planner = ({ number }) => {
+
+const Planner = ({ number, currentUsername }) => {
   const [exercises, setExercises] = useState([]);
   const [workouts, setWorkouts] = useState([]);
   const [workoutCount, setWorkoutCount] = useState(0);
@@ -41,9 +42,9 @@ const Planner = ({ number }) => {
   const postWorkout = () => {
     axios
       .post(
-        import.meta.env.VITE_SERVER_TRACKER_URL,
+        `${import.meta.env.VITE_SERVER_URL}/tracker`,
         {
-          user_id: user.auth.id,
+          username: currentUsername,
           exercises: workouts,
         },
         { withCredentials: true }
@@ -67,7 +68,7 @@ const Planner = ({ number }) => {
       <div
         className="flex items-center py-5 overflow-hidden"
         style={{ maxHeight: "90vh" }}>
-        <div className="py-5 m-auto">
+        <div className="py-5 m-auto space-x-4 space-y-2">
           <select
             className="select select-bordered w-full max-w-xs"
             value={workoutType}
@@ -82,7 +83,7 @@ const Planner = ({ number }) => {
             <option value="strongman">STRONGMAN</option>
           </select>
           <button
-            className="btn"
+            className="btn btn-accent border-2"
             onClick={showExModal}>
             Exercises
             <div className="badge badge-secondary">{workoutCount}</div>

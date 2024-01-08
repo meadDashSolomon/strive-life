@@ -100,6 +100,7 @@ module.exports = () => {
         getUserByUsername(info.currentUsername),
         addUserMessageToAiChatHistory(chatId, info.message),
       ]);
+      console.log("[chatHistory, userdata]:::::", [chatHistory, userdata]);
       chatHistory = await sortAiChatHistory(chatHistory);
       let experience;
       switch (userdata.experience) {
@@ -196,6 +197,13 @@ module.exports = () => {
   router.delete("/:chatId", async (req, res) => {
     try {
       const chatId = parseInt(req.params.chatId);
+      // First delete all related AiChatHistory records
+      await prisma.aiChatHistory.deleteMany({
+        where: {
+          ai_chat_id: chatId,
+        },
+      });
+      // Then delete the AiChat record
       const deletedChat = await prisma.aiChat.delete({
         where: {
           id: chatId,

@@ -4,10 +4,10 @@ import Search from "./Search";
 import axios from "axios";
 
 interface TrackerProps {
-  number: number;
+  currentUsername: string;
 }
 
-const Tracker: React.FC<TrackerProps> = ({ number }) => {
+const Tracker: React.FC<TrackerProps> = ({ currentUsername }) => {
   const [tracked, setTracked] = useState([]);
 
   const addWorkout = (input) => {
@@ -24,43 +24,43 @@ const Tracker: React.FC<TrackerProps> = ({ number }) => {
   };
 
   const listWorkout = (wo) => {
-    return wo.map((v) => {
-      return (
-        <div className="flex flex-col">
-          <div>{v.exercise.name}</div>
-          <div>
-            {v.set} x {v.rep}
-          </div>
+    return wo.map((v, index) => (
+      <div
+        key={index}
+        className="flex flex-col bg-gray-600 p-2 my-2 rounded-md">
+        <div>{v.exercise.name}</div>
+        <div>
+          {v.set} x {v.rep}
         </div>
-      );
-    });
+      </div>
+    ));
   };
 
   const renderAccordion = () => {
-    let arr = [];
-    for (let i = tracked.length - 1; i >= 0; i--) {
-      let v = tracked[i];
-      arr.push(
-        <div className="collapse collapse-arrow join-item border border-base-300">
-          <input
-            type="radio"
-            name="my-accordion-4"
-          />
-          <div className="collapse-title text-xl font-medium">
-            {v.date.getMonth() + 1}/{v.date.getDate()}/{v.date.getFullYear()}
-          </div>
-          <div className="collapse-content">{listWorkout(v.workout)}</div>
-        </div>
-      );
-    }
-    return arr;
+    return tracked.map((v, index) => (
+      <div
+        key={index}
+        className="collapse collapse-arrow border border-base-300 mb-2 rounded-md">
+        <input
+          type="checkbox"
+          className="peer"
+          id={`accordion-item-${index}`}
+        />
+        <label
+          htmlFor={`accordion-item-${index}`}
+          className="collapse-title text-xl font-medium cursor-pointer">
+          {v.date.getMonth() + 1}/{v.date.getDate()}/{v.date.getFullYear()}
+        </label>
+        <div className="collapse-content">{listWorkout(v.workout)}</div>
+      </div>
+    ));
   };
 
   const reformWO = (val) => {
     let arr = [];
     let d = new Date(val.created_at);
     val.date = d;
-    val.exercises.map((el) => {
+    val.exercise.map((el) => {
       arr.push({
         exercise: {
           name: el.exercise_name,
@@ -77,8 +77,8 @@ const Tracker: React.FC<TrackerProps> = ({ number }) => {
 
   useEffect(() => {
     axios
-      .get(import.meta.env.VITE_SERVER_TRACKER_URL, {
-        params: { num: number },
+      .get(`${import.meta.env.VITE_SERVER_URL}/tracker`, {
+        params: { username: currentUsername },
         withCredentials: true,
       })
       .then((data) => {
@@ -98,7 +98,8 @@ const Tracker: React.FC<TrackerProps> = ({ number }) => {
       <div className="m-4">
         <TrackerModal
           addWorkout={addWorkout}
-          u_id={number}></TrackerModal>
+          currentUsername={currentUsername}
+        />
       </div>
       <div className="overflow-auto h-[500px]">
         <div className="join join-vertical w-[500px]">{renderAccordion()}</div>

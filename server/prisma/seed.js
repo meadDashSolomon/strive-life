@@ -51,7 +51,7 @@ async function main() {
       data: {
         title: `User One Post ${i}`,
         body: `This is post ${i} by User One`,
-        user_id: user1.id,
+        username: user1.username,
       },
     });
   }
@@ -62,14 +62,14 @@ async function main() {
       data: {
         title: `User Two Post ${i}`,
         body: `This is post ${i} by User Two`,
-        user_id: user2.id,
+        username: user2.username,
       },
     });
   }
 
   // Create comments on user1's first post
   const user1Posts = await prisma.post.findMany({
-    where: { user_id: user1.id },
+    where: { username: user1.username },
   });
 
   if (user1Posts.length > 0) {
@@ -79,7 +79,7 @@ async function main() {
       await prisma.comment.create({
         data: {
           body: `Comment ${i} on User One's first post`,
-          user_id: user2.id,
+          username: user2.username,
           post_id: firstPostId,
         },
       });

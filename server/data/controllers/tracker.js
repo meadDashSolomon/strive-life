@@ -4,29 +4,33 @@ module.exports.getWorkouts = async (req, res) => {
   prisma.pastWorkout
     .findMany({
       where: {
-        // user_id: req.param.num
-        user_id: Number(req.query.num),
+        username: req.query.username,
       },
-      include: {
-        exercises: true,
+      select: {
+        id: true,
+        username: true,
+        created_at: true,
+        exercise: true,
       },
     })
     .then((data) => {
       res.send(data);
     })
     .catch((err) => {
+      console.error(err);
       res.sendStatus(500);
     });
 };
+
 module.exports.postWorkout = async (req, res) => {
   let exerArr = req.body.exercises;
-  let id = req.body.user_id;
+  let username = req.body.username;
 
   // pastWorkoutId
   prisma.pastWorkout
     .create({
       data: {
-        user_id: id,
+        username: username,
       },
     })
     .then((data) => {

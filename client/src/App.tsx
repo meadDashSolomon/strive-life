@@ -9,7 +9,6 @@ import Tracker from "./components/tracker/index";
 import DMs from "./components/chat/index.tsx";
 import GPTDMs from "./components/GPT/index.tsx";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import "./App.css";
 import { useContext } from "react";
 import AuthContext from "./components/auth/context/AuthProvider.tsx";
 
@@ -37,7 +36,7 @@ function App() {
         <a
           className="btn btn-ghost text-primary hover:bg-accent hover:text-primary normal-case text-xl"
           href="/social">
-          Clubhouse
+          Feed
         </a>
         <a
           className="btn btn-ghost text-primary hover:bg-accent hover:text-primary normal-case text-xl"
@@ -75,11 +74,16 @@ function App() {
               />
               <Route
                 path="planner"
-                element={<Planner number={3} />}
+                element={
+                  <Planner
+                    currentUsername={auth.username}
+                    number={3}
+                  />
+                }
               />
               <Route
                 path="tracker"
-                element={<Tracker number={3} />}
+                element={<Tracker currentUsername={auth.username} />}
               />
               <Route
                 path="/logout"

@@ -6,7 +6,6 @@ interface Message {
   content: string;
 }
 
-// ***----- DIRECT MESSAGE SENDER COMPONENT -----***
 const GPTSender: React.FC<{
   chatID: number;
   dmList: Message[];
