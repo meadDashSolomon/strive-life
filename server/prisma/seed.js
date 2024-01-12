@@ -13,16 +13,17 @@ async function main() {
   // Create sample users
   const user1 = await prisma.user.create({
     data: {
-      email: "user1@example.com",
-      name: "User One",
-      username: "userone",
-      password: await hashPassword("user1password"),
+      email: "alex.smith@example.com",
+      name: "Alex Smith",
+      username: "alexsmith",
+      password: await hashPassword("alex-pw"),
+      profile_pic: "/assets/alex.png",
       age: 30,
       experience: 1,
       goals: "Lose weight",
       height: 170,
       online_status: true,
-      sex: "female",
+      sex: "male",
       trainer: false,
       weight: 70,
     },
@@ -30,66 +31,60 @@ async function main() {
 
   const user2 = await prisma.user.create({
     data: {
-      email: "user2@example.com",
-      name: "User Two",
-      username: "usertwo",
-      password: await hashPassword("user2password"),
-      age: 25,
-      experience: 2,
-      goals: "Build muscle",
-      height: 180,
-      online_status: false,
+      email: "john.jacobs@example.com",
+      name: "John Jacobs",
+      username: "johnjacobs",
+      password: await hashPassword("john-pw"),
+      profile_pic: "/assets/john.png",
+      age: 30,
+      experience: 1,
+      goals: "Lose weight",
+      height: 170,
+      online_status: true,
       sex: "male",
-      trainer: true,
-      weight: 80,
+      trainer: false,
+      weight: 70,
     },
   });
 
-  // Create posts for user1
-  for (let i = 1; i <= 5; i++) {
-    await prisma.post.create({
-      data: {
-        title: `User One Post ${i}`,
-        body: `This is post ${i} by User One`,
-        username: user1.username,
-      },
-    });
-  }
-
-  // Create posts for user2
-  for (let i = 1; i <= 3; i++) {
-    await prisma.post.create({
-      data: {
-        title: `User Two Post ${i}`,
-        body: `This is post ${i} by User Two`,
-        username: user2.username,
-      },
-    });
-  }
-
-  // Create comments on user1's first post
-  const user1Posts = await prisma.post.findMany({
-    where: { username: user1.username },
+  // Posts
+  const post1 = await prisma.post.create({
+    data: {
+      title: "My Fitness Journey",
+      body: "Started my fitness journey today! Excited about the progress.",
+      username: user1.username,
+    },
   });
 
-  if (user1Posts.length > 0) {
-    const firstPostId = user1Posts[0].id;
+  const post2 = await prisma.post.create({
+    data: {
+      title: "I lost 5 pounds!",
+      body: "In the last month, I lost 5 pounds.",
+      username: user2.username,
+    },
+  });
 
-    for (let i = 1; i <= 3; i++) {
-      await prisma.comment.create({
-        data: {
-          body: `Comment ${i} on User One's first post`,
-          username: user2.username,
-          post_id: firstPostId,
-        },
-      });
-    }
-  }
+  // Comments
+  const comment1 = await prisma.comment.create({
+    data: {
+      body: "Great start! Keep it up!",
+      username: user2.username,
+      post_id: post1.id,
+    },
+  });
+
+  const comment2 = await prisma.comment.create({
+    data: {
+      body: "Way to go!",
+      username: user1.username,
+      post_id: post2.id,
+    },
+  });
 
   // Create direct messages between user1 and user2
   await prisma.directMessage.create({
     data: {
-      chat: "Hello from User One to User Two",
+      chat: "Hi John! How are you?",
       sender: {
         connect: { username: user1.username },
       },
@@ -101,7 +96,7 @@ async function main() {
 
   await prisma.directMessage.create({
     data: {
-      chat: "Hello from User Two to User One",
+      chat: "Great! You?",
       sender: {
         connect: { username: user2.username },
       },

@@ -1,6 +1,23 @@
 import React, { useRef, useState } from "react";
 
-const Exercise = ({
+interface ExerciseProps {
+  exercise: {
+    name: string;
+    equipment: string;
+    type: string;
+    instructions: string;
+  };
+  setWorkouts: React.Dispatch<React.SetStateAction<any[]>>;
+  workoutCount: number;
+  setWorkoutCount: React.Dispatch<React.SetStateAction<number>>;
+  workouts: any[];
+}
+
+/**
+ * Exercise component displays information about a single exercise and allows users to add it to their workout plan.
+ * @param {ExerciseProps} props - Properties include the exercise details, workout list, and their respective setter functions.
+ */
+const Exercise: React.FC<ExerciseProps> = ({
   exercise,
   setWorkouts,
   workoutCount,
@@ -30,7 +47,7 @@ const Exercise = ({
   };
 
   const handleHover = () => {
-    setHover("flex items-center py-5 bg-accent");
+    setHover("flex items-center py-5 bg-primary");
   };
 
   const handleLeave = () => {
@@ -70,7 +87,7 @@ const Exercise = ({
               name="sets"
               min={0}
               value={sets || 3}
-              className="input bg-secondary input-bordered w-20 max-w-xs"
+              className="input bg-primary input-bordered w-20 max-w-xs"
               onChange={handleSetChange}
             />
           ) : (
@@ -83,7 +100,7 @@ const Exercise = ({
             name="reps"
             min={0}
             value={reps || 10}
-            className="input bg-secondary input-bordered w-20 max-w-xs"
+            className="input bg-primary input-bordered w-20 max-w-xs"
             onChange={handleRepsChange}
           />
         </div>

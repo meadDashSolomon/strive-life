@@ -3,11 +3,11 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        primary: "#FCFCFB",
-        secondary: "#030303",
-        tertiary: "#7F7B82",
-        accent: "#CA0000",
-        neutral: "#3F4242",
+        primary: "#FCFCFB", // White-like background
+        secondary: "#030303", // Black-like text
+        accent: "#CA0000", // Red-like elements
+        neutral: "#F3F4F6", // Light grey for neutral areas
+        "base-100": "#FFFFFF", // White background
       },
     },
   },
@@ -17,42 +17,38 @@ module.exports = {
         gymbuddy: {
           primary: "#FCFCFB",
           secondary: "#030303",
-          tertiary: "#7F7B82",
           accent: "#CA0000",
-          neutral: "#3F4242",
-        }
+          neutral: "#F3F4F6",
+          "base-100": "#FFFFFF",
+        },
       },
-      "dark"
+      "dark",
     ],
   },
-  plugins: [
-    require("daisyui")
-  ],
+  plugins: [require("daisyui")],
   daisyui: {
     themes: [
       {
         main: {
+          primary: "#FCFCFB",
 
-"primary": "#FCFCFB",
+          secondary: "#030303",
 
-"secondary": "#030303",
+          accent: "#CA0000",
 
-"accent": "#CA0000",
+          neutral: "#F3F4F6",
 
-"neutral": "#3F4242",
+          "base-100": "#FFFFFF",
 
-"base-100": "#4b5563",
+          info: "#3abff8",
 
-"info": "#3abff8",
+          success: "#36d399",
 
-"success": "#36d399",
+          warning: "#fbbd23",
 
-"warning": "#fbbd23",
-
-"error": "#f87272",
+          error: "#f87272",
         },
       },
     ],
   },
-}
-
+};

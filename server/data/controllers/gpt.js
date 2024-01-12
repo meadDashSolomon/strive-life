@@ -18,7 +18,6 @@ async function sortAiChatHistory(aiChatHistories) {
     aiChatHistories.sort(
       (a, b) => a.created_at.getTime() - b.created_at.getTime()
     );
-
     // Format the data into the desired array of objects
     const formattedData = aiChatHistories.map((chatHistory) => {
       return {
@@ -95,12 +94,16 @@ module.exports = () => {
     try {
       const info = req.body;
       chatId = parseInt(req.params.chatId);
+
+      const addNewMessage = await addUserMessageToAiChatHistory(
+        chatId,
+        info.message
+      );
+
       let [chatHistory, userdata] = await Promise.all([
         getAiChatHistoryByAiChatId(chatId),
         getUserByUsername(info.currentUsername),
-        addUserMessageToAiChatHistory(chatId, info.message),
       ]);
-      console.log("[chatHistory, userdata]:::::", [chatHistory, userdata]);
       chatHistory = await sortAiChatHistory(chatHistory);
       let experience;
       switch (userdata.experience) {
@@ -118,7 +121,7 @@ module.exports = () => {
           break;
       }
 
-      let sysprompt = `You are a health and fitness coach chatbot who replies enthusiastically and encouragingly to your client. Who is ${
+      let sysprompt = `You are a health and fitness coach chatbot who replies in no more than 45 words per response to your client. Who is ${
         userdata.sex
       }. Their age is ${
         userdata.age
@@ -135,6 +138,7 @@ module.exports = () => {
       };
 
       chatHistory.unshift(system);
+
       const gptResponse = await openai.createChatCompletion({
         model: "gpt-3.5-turbo",
         messages: chatHistory,

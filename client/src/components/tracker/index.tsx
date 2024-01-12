@@ -7,27 +7,43 @@ interface TrackerProps {
   currentUsername: string;
 }
 
-const Tracker: React.FC<TrackerProps> = ({ currentUsername }) => {
-  const [tracked, setTracked] = useState([]);
+interface WorkoutDetail {
+  exercise: {
+    name: string;
+  };
+  set: number;
+  rep: number;
+}
 
-  const addWorkout = (input) => {
+interface WorkoutRecord {
+  date: Date;
+  workout: WorkoutDetail[];
+}
+
+/**
+ * Tracker component for displaying and managing user workout records.
+ * @param {TrackerProps} props - Properties including the current user's username.
+ */
+const Tracker: React.FC<TrackerProps> = ({ currentUsername }) => {
+  const [tracked, setTracked] = useState<WorkoutRecord[]>([]);
+
+  // Adds a new workout to the tracked list
+  const addWorkout = (input: WorkoutDetail[]) => {
     if (input.length > 0) {
-      let arr = [];
-      tracked.forEach((val) => arr.push(val));
-      const d = new Date();
-      arr.push({
+      const newRecord: WorkoutRecord = {
         workout: input,
-        date: d,
-      });
-      setTracked(arr);
+        date: new Date(),
+      };
+      setTracked((prev) => [...prev, newRecord]);
     }
   };
 
-  const listWorkout = (wo) => {
-    return wo.map((v, index) => (
+  // Lists workouts in an accordion
+  const listWorkout = (workouts: WorkoutDetail[]) => {
+    return workouts.map((v, index) => (
       <div
         key={index}
-        className="flex flex-col bg-gray-600 p-2 my-2 rounded-md">
+        className="flex flex-col bg-neutral p-2 my-2 rounded-md">
         <div>{v.exercise.name}</div>
         <div>
           {v.set} x {v.rep}
@@ -36,6 +52,7 @@ const Tracker: React.FC<TrackerProps> = ({ currentUsername }) => {
     ));
   };
 
+  // Renders the accordion for each tracked workout
   const renderAccordion = () => {
     return tracked.map((v, index) => (
       <div
@@ -49,50 +66,37 @@ const Tracker: React.FC<TrackerProps> = ({ currentUsername }) => {
         <label
           htmlFor={`accordion-item-${index}`}
           className="collapse-title text-xl font-medium cursor-pointer">
-          {v.date.getMonth() + 1}/{v.date.getDate()}/{v.date.getFullYear()}
+          {v.date.toLocaleDateString()}
         </label>
         <div className="collapse-content">{listWorkout(v.workout)}</div>
       </div>
     ));
   };
 
-  const reformWO = (val) => {
-    let arr = [];
-    let d = new Date(val.created_at);
-    val.date = d;
-    val.exercise.map((el) => {
-      arr.push({
-        exercise: {
-          name: el.exercise_name,
-        },
-        set: el.set,
-        rep: el.rep,
-      });
-    });
+  // Reformats the workout data fetched from the server
+  const reformWO = (val: any) => {
+    const workoutDetails: WorkoutDetail[] = val.exercise.map((el: any) => ({
+      exercise: { name: el.exercise_name },
+      set: el.set,
+      rep: el.rep,
+    }));
+
     return {
-      date: d,
-      workout: arr,
+      date: new Date(val.created_at),
+      workout: workoutDetails,
     };
   };
 
+  // Fetches workout records on component mount
   useEffect(() => {
     axios
       .get(`${import.meta.env.VITE_SERVER_URL}/tracker`, {
         params: { username: currentUsername },
         withCredentials: true,
       })
-      .then((data) => {
-        let arr = [];
-        data.data.forEach((val) => {
-          arr.push(reformWO(val));
-        });
-        setTracked(arr);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  }, []);
-
+      .then((data) => setTracked(data.data.map(reformWO)))
+      .catch(console.error);
+  }, [currentUsername]);
   return (
     <>
       <div className="m-4">

@@ -1,34 +1,50 @@
 import React, { useContext, useState } from "react";
 import GPT from "./gptRoutes.js";
 import "../../../App.css";
+
 interface Message {
-  role: string;
+  role: string; // 'user' or 'ai'
   content: string;
 }
 
-const GPTSender: React.FC<{
+interface GPTSenderProps {
   chatID: number;
   dmList: Message[];
   setDmList: React.Dispatch<React.SetStateAction<Message[]>>;
   currentUsername: string;
-}> = ({ chatID, dmList, setDmList, currentUsername }) => {
+}
+
+/**
+ * GPTSender component for sending messages to the GPT chat API.
+ * @param {GPTSenderProps} props - Includes chatID, message list and its setter, and the current user's username.
+ */
+const GPTSender: React.FC<GPTSenderProps> = ({
+  chatID,
+  dmList,
+  setDmList,
+  currentUsername,
+}) => {
   const [messageContent, setMessageContent] = useState("");
   const [isSending, setIsSending] = useState(false);
 
+  /**
+   * Handles the submission of the chat form.
+   * @param {React.FormEvent} event - The form submission event.
+   */
   const handleSubmit = (event: React.FormEvent) => {
     event.preventDefault();
-    if (dmList.length === 0) {
-      setDmList([{ content: messageContent, role: "user" }]);
-    } else {
-      setDmList([...dmList, { content: messageContent, role: "user" }]);
-    }
+    const updatedDmList =
+      dmList.length === 0
+        ? [{ content: messageContent, role: "user" }]
+        : [...dmList, { content: messageContent, role: "user" }];
+
     setIsSending(true);
 
     GPT.postGpt(chatID, currentUsername, messageContent)
       .then((res) => {
         setMessageContent("");
         setIsSending(false);
-        setDmList((dmList) => [...dmList, { content: res, role: "ai" }]);
+        setDmList([...updatedDmList, { content: res, role: "ai" }]);
       })
       .catch((err) => {
         console.error(err);
@@ -43,7 +59,7 @@ const GPTSender: React.FC<{
       <textarea
         value={messageContent}
         onChange={(e) => setMessageContent(e.target.value)}
-        className="text-base-100-bold bg-secondary pl-5"
+        className="text-base-100-bold bg-neutral pl-5"
       />
       <button
         type="submit"

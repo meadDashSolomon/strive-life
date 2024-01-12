@@ -1,7 +1,11 @@
-import { useEffect } from "react";
+import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
-const LogoutRoute = ({ logout }) => {
+interface LogoutRouteProps {
+  logout: () => Promise<void>;
+}
+
+const LogoutRoute: React.FC<LogoutRouteProps> = ({ logout }) => {
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -11,9 +15,9 @@ const LogoutRoute = ({ logout }) => {
     };
 
     performLogout();
-  }, [logout]);
+  }, [logout, navigate]);
 
-  return <div className="">Logging out, please wait . . . </div>;
+  return <div>Logging out, please wait . . . </div>;
 };
 
 export default LogoutRoute;

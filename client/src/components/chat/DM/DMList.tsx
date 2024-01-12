@@ -1,3 +1,5 @@
+import React from "react";
+
 interface Message {
   id: number;
   sender_username: string;
@@ -6,11 +8,19 @@ interface Message {
   created_at: string;
 }
 
-const DirectMessageList: React.FC<{
+interface DirectMessageListProps {
   currentUsername: string;
   messages?: Message[];
-}> = ({ currentUsername, messages }) => {
-  // Check if there are messages to display
+}
+
+/**
+ * DirectMessageList displays a list of messages in a chat conversation.
+ * @param {DirectMessageListProps} props - Properties include the current user's username and an optional array of messages.
+ */
+const DirectMessageList: React.FC<DirectMessageListProps> = ({
+  currentUsername,
+  messages,
+}) => {
   if (!messages || messages.length === 0) {
     return <div className="chat-empty">No messages yet.</div>;
   }
@@ -22,8 +32,8 @@ const DirectMessageList: React.FC<{
           key={msg.id}
           className={`chat-bubble ${
             msg.sender_username === currentUsername
-              ? "self-end bg-accent text-primary"
-              : "self-start bg-neutral text-primary"
+              ? "self-end bg-accent text-neutral"
+              : "self-start bg-neutral text-secondary"
           }`}>
           <p>{msg.chat}</p>
           <div className="chat-metadata">

@@ -9,18 +9,30 @@ interface ChatProps {
   currentUsername: string;
 }
 
+/**
+ * Chat component for displaying and managing chat messages between users.
+ * @param {ChatProps} props - Component props including the current user's username.
+ */
 const Chat: React.FC<ChatProps> = ({ currentUsername }) => {
-  // state for posting messages
+  // State for the content of the new message
   const [messageContent, setMessageContent] = useState("");
-  // state for holding list of messages
+
+  // State for holding the list of chat messages
   const [messages, setMessages] = useState<string[]>([]);
+
+  // Extract friend's username from URL parameters
   const { friendUsername } = useParams();
 
+  /**
+   * Fetches chat messages between the current user and the selected friend.
+   */
   const fetchMessages = () => {
     axios
       .get(
         `http://localhost:8080/social?currentUsername=${currentUsername}&friendUsername=${friendUsername}`,
-        { withCredentials: true }
+        {
+          withCredentials: true,
+        }
       )
       .then((res) => {
         setMessages(res.data);
@@ -30,17 +42,16 @@ const Chat: React.FC<ChatProps> = ({ currentUsername }) => {
       });
   };
 
-  // fetch messages on new user name
+  // Effect to fetch messages whenever the current or friend's username changes
   useEffect(() => {
     if (currentUsername && friendUsername) {
       fetchMessages();
     }
   }, [currentUsername, friendUsername]);
 
+  // Display a message if no friend is selected
   if (!friendUsername) {
-    return (
-      <div className="">Select a user from the dropdown to start chatting.</div>
-    );
+    return <div>Select a user from the dropdown to start chatting.</div>;
   }
 
   return (

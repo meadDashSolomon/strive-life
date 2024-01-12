@@ -1,13 +1,17 @@
+import React, { useState } from "react";
 import ChatSelectHeader from "./ChatSelect/header";
-import React, { useEffect, useState } from "react";
 import GPTChat from "./GPTChatParent";
 
 interface GPTDMsProps {
   currentUsername: string;
 }
 
+/**
+ * GPTDMs component for managing AI-based chat conversations.
+ * @param {GPTDMsProps} props - Component props including the current user's username.
+ */
 const GPTDMs: React.FC<GPTDMsProps> = ({ currentUsername }) => {
-  const [aichatid, setAiChatId] = React.useState<number | null>(null);
+  const [aichatid, setAiChatId] = useState<number | null>(null);
 
   return (
     <div className="flex flex-col gap-1">

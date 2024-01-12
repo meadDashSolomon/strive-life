@@ -33,9 +33,9 @@ module.exports.getPosts = async (req, res) => {
 };
 
 module.exports.postComment = async (req, res) => {
-  const { body, user_id, post_id } = req.body;
+  const { body, username, post_id } = req.body;
 
-  if (!body || !user_id || !post_id) {
+  if (!body || !username || !post_id) {
     res.sendStatus(400);
     return;
   }
@@ -45,7 +45,7 @@ module.exports.postComment = async (req, res) => {
       data: {
         body: body,
         user: {
-          connect: { id: user_id },
+          connect: { username: username },
         },
         post: {
           connect: { id: post_id },

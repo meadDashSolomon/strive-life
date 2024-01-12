@@ -1,21 +1,26 @@
-import Post from "./post";
+import { useState, useEffect } from "react";
 import axios from "axios";
-import { useState, useEffect, useContext } from "react";
+import Post from "./post";
 import { postInterface } from "./interfaces";
 import PostForm from "./PostForm";
 
-//#7F7B82
-function Feed() {
+interface FeedProps {
+  currentUsername: string;
+}
+
+/**
+ * Feed component for displaying a list of posts and a form for creating new posts.
+ * @param {FeedProps} props - Properties including the current user's username.
+ */
+function Feed({ currentUsername }: FeedProps) {
   const [posts, setPosts] = useState<postInterface[]>([]);
 
   useEffect(() => {
     axios
-      .get(import.meta.env.VITE_SERVER_URL + "/posts", {
+      .get(`${import.meta.env.VITE_SERVER_URL}/posts`, {
         withCredentials: true,
       })
-      .then((response) => {
-        setPosts(response.data);
-      });
+      .then((response) => setPosts(response.data));
   }, []);
 
   return (
@@ -26,14 +31,13 @@ function Feed() {
         className="card w-1/1 bg-primary p-4 overflow-scroll"
         style={{ minHeight: "200px", maxHeight: "90vh" }}>
         <div className="h-full overflow-y-scroll">
-          {posts.map((post, i) => {
-            return (
-              <Post
-                key={i}
-                post={post}
-              />
-            );
-          })}
+          {posts.map((post, i) => (
+            <Post
+              key={i}
+              post={post}
+              currentUsername={currentUsername}
+            />
+          ))}
         </div>
         <PostForm />
       </div>

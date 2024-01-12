@@ -1,121 +1,119 @@
 import { useState, useContext } from "react";
 import axios from "axios";
 import AuthContext from "./context/AuthProvider";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
-import SignUp from "./SignUp";
-import Planner from "../planner/subcomponents/Planner";
 import { useNavigate } from "react-router-dom";
 
+interface LoginInputs {
+  username?: string;
+  password?: string;
+}
+
 export default function Login() {
-  const { auth, setAuth } = useContext(AuthContext);
-  const [inputs, setInputs] = useState({});
+  const { setAuth } = useContext(AuthContext);
+  const [inputs, setInputs] = useState<LoginInputs>({});
   const navigate = useNavigate();
 
+  /**
+   * Navigate to the signup page.
+   */
   const handleSignupClick = () => {
     navigate("/signup");
   };
 
-  const handleChange = (e) => {
-    const name = e.target.name;
-    const value = e.target.value;
+  /**
+   * Update state on input change.
+   * @param {ChangeEvent<HTMLInputElement>} e - The event triggered on input change.
+   */
+  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
     setInputs((values) => ({ ...values, [name]: value }));
   };
 
-  const handleSubmit = async (e) => {
+  /**
+   * Handle form submission to log in the user.
+   * @param {FormEvent<HTMLFormElement>} e - The event triggered on form submission.
+   */
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-
-    const username = inputs.username;
-    const password = inputs.password;
+    const { username, password } = inputs;
 
     try {
       const resp = await axios.post(
         "http://localhost:8080/auth",
         JSON.stringify({ username, password }),
         {
-          headers: {
-            "Content-Type": "application/json",
-          },
+          headers: { "Content-Type": "application/json" },
           withCredentials: true,
         }
       );
-      const accessToken = resp?.data?.accessToken;
-      const id = resp?.data?.id;
 
+      const { accessToken, id } = resp.data;
       setAuth({ username, accessToken, id });
 
-      document.location.href = "/planner";
-      setAuth({ username, accessToken, id });
-
-      // Navigate to the planner page without a full reload
+      // Navigate to the planner page
       navigate("/planner");
     } catch (err) {
       console.error(err);
-      alert(err);
+      alert("An error occurred during login.");
     }
   };
 
   return (
-    <div>
-      <h2>Login Below</h2>
-
-      <div>
-        <form onSubmit={handleSubmit}>
-          <div>
-            <label className="label">
-              <span className="label-text text-primary">Username: </span>
+    <div className="flex flex-col items-center min-h-screen bg-primary">
+      <div className="w-full max-w-xs">
+        <h2 className="text-center py-5 text-lg font-semibold text-secondary">
+          Login Below
+        </h2>
+        <form
+          onSubmit={handleSubmit}
+          className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
+          <div className="mb-4">
+            <label className="block text-secondary text-sm font-bold mb-2">
+              Username:
             </label>
-          </div>
-
-          <div>
             <input
               required
               type="text"
               name="username"
               value={inputs.username || ""}
               placeholder="Enter username here"
-              className="input bg-secondary input-bordered w-full max-w-xs"
+              className="input input-bordered w-full text-secondary"
               onChange={handleChange}
             />
           </div>
 
-          <div>
-            <label className="label">
-              <span className="label-text text-primary">Password: </span>
+          <div className="mb-6">
+            <label className="block text-secondary text-sm font-bold mb-2">
+              Password:
             </label>
-          </div>
-
-          <div>
             <input
               required
               type="password"
               name="password"
               value={inputs.password || ""}
               placeholder="Enter password here"
-              className="input bg-secondary input-bordered w-full max-w-xs"
+              className="input input-bordered w-full text-secondary"
               onChange={handleChange}
             />
           </div>
-          <div style={{ marginTop: 10 }}>
-            <span className="label-text text-primary">Need and account? </span>
-            <span
-              style={{ borderRadius: "15%", padding: 2, cursor: "pointer" }}
-              className="label-text text-accent bg-neutral"
-              onClick={handleSignupClick}>
+
+          <div className="flex items-center justify-between mt-4">
+            <span className="inline-block align-baseline font-bold text-sm text-secondary">
+              Need an account?
+            </span>
+            <a
+              href="#signup"
+              onClick={handleSignupClick}
+              className="inline-block align-baseline font-bold text-sm text-accent hover:text-accent-hover">
               Sign Up
-            </span>
+            </a>
           </div>
 
-          <div style={{ marginTop: 40 }}>
-            <span className="label-text text-primary">
-              Or sign in with Google
-            </span>
-          </div>
-
-          <div style={{ marginTop: 40, marginBottom: 40 }}>
+          <div className="mt-8">
             <input
               type="submit"
-              className="btn bg-neutral"
               value="Login"
+              className="btn block w-full bg-accent text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
             />
           </div>
         </form>

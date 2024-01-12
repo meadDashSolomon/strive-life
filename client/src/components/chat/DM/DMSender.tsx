@@ -1,3 +1,4 @@
+import React from "react";
 import axios from "axios";
 import "../../../App.css";
 
@@ -17,6 +18,10 @@ interface DirectMessageSenderProps {
   setMessageContent: React.Dispatch<React.SetStateAction<string>>;
 }
 
+/**
+ * DirectMessageSender allows the user to send messages in a chat conversation.
+ * @param {DirectMessageSenderProps} props - Properties include the current and friend's username, message state setters, and message content.
+ */
 const DirectMessageSender: React.FC<DirectMessageSenderProps> = ({
   currentUsername,
   friendUsername,
@@ -79,11 +84,11 @@ const DirectMessageSender: React.FC<DirectMessageSenderProps> = ({
       <textarea
         value={messageContent}
         onChange={(e) => setMessageContent(e.target.value)}
-        className="text-base-100-bold bg-secondary pl-5"
+        className="text-base-100-bold bg-neutral pl-5"
       />
       <button
         type="submit"
-        className="bg-accent text-primary ml-2">
+        className="bg-accent text-neutral ml-2">
         Send
       </button>
     </form>

@@ -1,10 +1,15 @@
+/**
+ * App component for the full-stack fitness tracking app.
+ * It provides navigation and routing for the entire application.
+ * Depending on the authentication state, it renders different components.
+ */
 import "./App.css";
 import Auth from "./components/auth/index";
 import Login from "./components/auth/Login.tsx";
 import LogoutRoute from "./components/auth/LogoutRoute.tsx";
 import Social from "./components/social/index";
 import Notfound from "./components/notfound";
-import Planner from "./components/planner/Planner.jsx";
+import Planner from "./components/planner/Planner.tsx";
 import Tracker from "./components/tracker/index";
 import DMs from "./components/chat/index.tsx";
 import GPTDMs from "./components/GPT/index.tsx";
@@ -16,7 +21,7 @@ function App() {
   const { auth, logout } = useContext(AuthContext);
 
   return (
-    <div className="absolute bg-neutral top-0 w-full h-full p-0">
+    <div className="absolute bg-primary top-0 w-full h-full p-0">
       <div className="w-full navbar bg-secondary p-0">
         <a
           className="btn btn-ghost text-primary hover:bg-accent hover:text-primary text-xl"
@@ -70,20 +75,33 @@ function App() {
               />
               <Route
                 path="social"
-                element={<Social />}
+                element={
+                  auth?.username ? (
+                    <Social currentUsername={auth.username} />
+                  ) : (
+                    <Login />
+                  )
+                }
               />
               <Route
                 path="planner"
                 element={
-                  <Planner
-                    currentUsername={auth.username}
-                    number={3}
-                  />
+                  auth?.username ? (
+                    <Planner currentUsername={auth.username} />
+                  ) : (
+                    <Login />
+                  )
                 }
               />
               <Route
                 path="tracker"
-                element={<Tracker currentUsername={auth.username} />}
+                element={
+                  auth?.username ? (
+                    <Tracker currentUsername={auth.username} />
+                  ) : (
+                    <Login />
+                  )
+                }
               />
               <Route
                 path="/logout"
@@ -126,7 +144,7 @@ function App() {
             </Routes>
           </BrowserRouter>
         </div>
-        <div className="p-4 bg-neutral"></div>
+        <div className="p-4 bg-base-100"></div>
       </div>
     </div>
   );

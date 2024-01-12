@@ -38,7 +38,7 @@ app.use(morgan("dev"));
 app.use(bodyParser.json());
 
 app.use("/auth", authControllers.loginUser);
-app.post("/register", usersControllers.registerUser);
+app.post("/signup", usersControllers.registerUser);
 
 app.use("/gpt", gpt());
 

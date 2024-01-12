@@ -1,10 +1,10 @@
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import "../../App.css";
 import GPTList from "./subcomponents/GPTList";
 import GPTSender from "./subcomponents/GPTSender";
 import GPT from "./subcomponents/gptRoutes";
 
-interface dmList {
+interface DMList {
   id: number;
   ai_chat_id: number;
   is_ai: number;
@@ -12,12 +12,17 @@ interface dmList {
   created_at: string;
 }
 
-const GPTChat: React.FC<{
-  dmList: dmList[];
+interface GPTChatProps {
   currentUsername: string;
   chatID: number;
-}> = ({ currentUsername, chatID }) => {
-  const [dmList, setDmList] = useState([]);
+}
+
+/**
+ * GPTChat component for displaying and sending messages in an AI chat.
+ * @param {GPTChatProps} props - Component props including the current user's username and the chat ID for the AI conversation.
+ */
+const GPTChat: React.FC<GPTChatProps> = ({ currentUsername, chatID }) => {
+  const [dmList, setDmList] = useState<DMList[]>([]);
 
   useEffect(() => {
     GPT.fetchGpt(chatID)
@@ -30,11 +35,13 @@ const GPTChat: React.FC<{
   }, [currentUsername, chatID]);
 
   return (
-    <div className="flex-row">
-      <GPTList
-        messages={dmList}
-        setDmList={setDmList}
-      />
+    <div className="flex flex-col h-full">
+      <div className="flex-grow overflow-hidden">
+        <GPTList
+          messages={dmList}
+          setDmList={setDmList}
+        />
+      </div>
       <GPTSender
         chatID={chatID}
         dmList={dmList}

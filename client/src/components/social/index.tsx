@@ -1,9 +1,17 @@
 import Feed from "./feed";
 
-function Social() {
+interface SocialProps {
+  currentUsername: string;
+}
+
+/**
+ * Social component that acts as a container for the Feed component.
+ * @param {SocialProps} props - Properties including the current user's username.
+ */
+function Social({ currentUsername }: SocialProps) {
   return (
     <div>
-      <Feed />
+      <Feed currentUsername={currentUsername} />
     </div>
   );
 }

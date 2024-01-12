@@ -1,7 +1,10 @@
-import React, { useContext } from "react";
+import React, { useState, useContext } from "react";
 import axios from "axios";
 import AuthContext from "../auth/context/AuthProvider";
 
+/**
+ * Declares the global interface for the modal object.
+ */
 interface Modal {
   showModal: VoidFunction;
   close: VoidFunction;
@@ -12,22 +15,27 @@ declare global {
   }
 }
 
-const URL = import.meta.env.VITE_SERVER_URL + "/posts";
+/**
+ * PostForm component allows users to create new posts.
+ */
 function PostForm() {
-  const [title, setTitle] = React.useState("");
-  const [body, setBody] = React.useState("");
-  const [photos, setPhotos] = React.useState([]);
+  const [title, setTitle] = useState("");
+  const [body, setBody] = useState("");
+  const [photos, setPhotos] = useState([]);
   const user = useContext(AuthContext);
 
+  // Opens the modal for creating a new post
   function openModal() {
     window.new_post_modal.showModal();
   }
 
+  // Closes the modal without submitting
   function handleClose(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     window.new_post_modal.close();
   }
 
+  // Submits the new post data to the server
   function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     const post = {
@@ -36,15 +44,17 @@ function PostForm() {
       photos,
       id: user.auth.id,
     };
+
     axios
-      .post(URL, post, { withCredentials: true })
+      .post(import.meta.env.VITE_SERVER_URL + "/posts", post, {
+        withCredentials: true,
+      })
       .then(() => {
         window.new_post_modal.close();
-        document.getElementById("new_post_form").reset();
+        document.getElementById("new_post_form")?.reset();
       })
       .catch((err: Error) => {
-        console.log("Ooops something went wrong");
-        console.log(err.message);
+        console.error("Oops, something went wrong:", err.message);
       });
   }
 

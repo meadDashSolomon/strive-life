@@ -1,35 +1,41 @@
 import React, { useState, useEffect, useRef } from "react";
-import { exercise } from "./exerciseInterface.ts";
+import { Exercise } from "./exerciseInterface.ts";
 import Search from "./Search.tsx";
 import PlusMinus from "./PlusMinus.tsx";
 import axios from "axios";
 
 interface exercisePlus {
-  exercise: exercise;
+  exercise: Exercise;
   set: number;
   rep: number;
 }
 
-const TrackerModal = ({ addWorkout, currentUsername }) => {
+interface TrackerModalProps {
+  addWorkout: (workouts: ExercisePlus[]) => void;
+  currentUsername: string;
+}
+
+/**
+ * TrackerModal component for adding new workouts.
+ * @param {TrackerModalProps} props - Includes addWorkout function and the current user's username.
+ */
+const TrackerModal: React.FC<TrackerModalProps> = ({
+  addWorkout,
+  currentUsername,
+}) => {
   const [currSets, setCurrSets] = useState<number>(0);
   const [currReps, setCurrReps] = useState<number>(0);
-  const [currExercise, setCurrExercise] = useState<exercise>();
-
+  const [currExercise, setCurrExercise] = useState<Exercise | undefined>();
   const [exerciseList, setExerciseList] = useState<exercisePlus[]>([]);
 
-  const addExercise = (e) => {
+  const addExercise = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     e.preventDefault();
-    const arr = [];
-    exerciseList.forEach((val) => arr.push(val));
     if (currExercise) {
-      const tempObj = {
-        exercise: currExercise,
-        set: currSets,
-        rep: currReps,
-      };
-      arr.push(tempObj);
+      setExerciseList((prev) => [
+        ...prev,
+        { exercise: currExercise, set: currSets, rep: currReps },
+      ]);
     }
-    setExerciseList(arr);
   };
 
   const postWorkout = () => {
@@ -42,12 +48,8 @@ const TrackerModal = ({ addWorkout, currentUsername }) => {
         },
         { withCredentials: true }
       )
-      .then((data) => {
-        console.log(data);
-      })
-      .catch((err) => {
-        console.log("Tracker getWorkouts err: ", err);
-      });
+      .then((data) => console.log(data))
+      .catch((err) => console.error("Tracker getWorkouts error:", err));
   };
 
   return (
@@ -87,7 +89,7 @@ const TrackerModal = ({ addWorkout, currentUsername }) => {
                 <div></div>
                 <button
                   onClick={addExercise}
-                  className="m-2">
+                  className="m-2 bg-neutral">
                   Add Exercise
                 </button>
               </div>
@@ -107,7 +109,8 @@ const TrackerModal = ({ addWorkout, currentUsername }) => {
               setExerciseList([]);
               window.my_modal_3.close();
             }}
-            disabled={exerciseList.length === 0}>
+            disabled={exerciseList.length === 0}
+            className="bg-neutral">
             Confirm Workout
           </button>
         </form>

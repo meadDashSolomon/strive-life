@@ -1,13 +1,24 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import gpt from "../subcomponents/gptRoutes";
-const GptDropdownMenu = ({ setAiChatId, currentUsername }) => {
-  const [data, setData] = React.useState([]);
 
-  React.useEffect(() => {
-    gpt.fetchGptList(currentUsername).then((res) => {
-      setData(res);
-    });
-  }, []);
+interface GptDropdownMenuProps {
+  setAiChatId: React.Dispatch<React.SetStateAction<number | null>>;
+  currentUsername: string;
+}
+
+/**
+ * GptDropdownMenu manages a dropdown menu for AI chat sessions.
+ * @param {GptDropdownMenuProps} props - Properties include setAiChatId function and the current user's username.
+ */
+const GptDropdownMenu: React.FC<GptDropdownMenuProps> = ({
+  setAiChatId,
+  currentUsername,
+}) => {
+  const [data, setData] = useState([]);
+
+  useEffect(() => {
+    gpt.fetchGptList(currentUsername).then(setData);
+  }, [currentUsername]);
 
   const getChatColor = (chatId) => {
     const colors = ["#ff0000", "#00ff00", "#0000ff", "#ff00ff", "#ffff00"];
