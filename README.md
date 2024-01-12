@@ -38,37 +38,37 @@ Please see this demo (https://recordit.co/ta1D32Surc) of the prototype for the w
 
 ## Login and Auth
 
-![Login-and-Auth](img/Screenshot_2024-01-12_at_16.33.34.png)
+![Login-and-Auth](imgs/assets/Screenshot_2024-01-12_at_16.33.34.png)
 
 The authentication component allows users to securely create an account and provide information about their fitness level to generate a curated user experience.
 
 ## Workout Planner
 
-![Workout-Planner](img/assets/Screenshot_2024-01-12_at_16.33.34.png)
+![Workout-Planner](imgs/assets/Screenshot_2024-01-12_at_16.33.34.png)
 
 The Workout Planner allows users to quickly select a type of workout like lifting weights, cardio, or plyometrics and then receive a list of possible workouts with detailed explanations.
 
 ## Progress Tracker
 
-![Progress-Tracker](img/assets/Screenshot_2024-01-12_at_16.34.21.png)
+![Progress-Tracker](imgs/assets/Screenshot_2024-01-12_at_16.34.21.png)
 
 The Progress Tracker enables users to monitor their fitness journey. Users can see workouts that they saved in the Planner component as well as search an exercise API for alternative workouts.
 
 ## Chat
 
-![Chat](img/assets/Screenshot_2024-01-12_at_16.38.34.png)
+![Chat](imgs/assets/Screenshot_2024-01-12_at_16.38.34.png)
 
 The Chat component serves as a hub for community interaction and support within our fitness app. It allows users to connect by directly messaging one another via the app.
 
 ## Social Feed
 
-![Social-Feed](img/assets/Screenshot_2024-01-12_at_16.38.15.png)
+![Social-Feed](imgs/assets/Screenshot_2024-01-12_at_16.38.15.png)
 
 The Social Feed lets users can share their fitness milestones, experiences, and daily activities with friends and peers via posts. Similarly, users can comment on one another's posts.
 
 ## AI Chat
 
-![AI-Chat](img/assets/Screenshot_2024-01-12_at_16.39.47.png)
+![AI-Chat](imgs/assets/Screenshot_2024-01-12_at_16.39.47.png)
 
 The AI chat is an innovative feature providing personalized workout suggestions and guidance. Interface with a Chat GPT based personal training assistant with knowledge of your fitness background.
 
