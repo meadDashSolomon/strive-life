@@ -14,7 +14,6 @@ interface SearchProps {
 function apiCall(query: string) {
   return axios.get(`https://api.api-ninjas.com/v1/exercises?name=${query}`, {
     headers: { "X-Api-Key": import.meta.env.VITE_EXERCISE_API },
-    withCredentials: true,
   });
 }
 

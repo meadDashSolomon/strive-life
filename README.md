@@ -1,10 +1,8 @@
-# strive-life
+# Strive Life Fitness
 
-A Full-Stack Fitness Tracker App with AI
+A Full-Stack AI-Powered Fitness Tracker App.
 
-# Jym Brah Fitness Site
-
-Jym Brah is a fitness tracker and social media site that lets gym goers learn new workouts, ask AI for recommendations, and share their gains with friends.
+Strive Life is a fitness tracker and social media site that lets gym goers learn new workouts, ask AI for recommendations, and share their achievements with friends.
 
 ## Table of Contents
 
@@ -16,7 +14,19 @@ Jym Brah is a fitness tracker and social media site that lets gym goers learn ne
 
 # Project Description
 
-We created this project from scratch over the course of a week as part of the Hack Reactor Software Engineering Immersive. We were given a “client” that requested that we build a fitness site where gym goers can track their workouts, interact with friends via a social media feed, and receive recommendations from AI.
+This project began as an ambitious 1-week sprint to create an MVP for a fitness tracking and social media application. The project was a team effort, aimed at delivering a functional product for an external user. As a part of this team, I was responsible for developing the chat functionality.
+
+During this sprint, my work on the chat feature was closely intertwined with the authentication component, which was handled by another team member. Recognizing the challenge and the importance of collaboration, I maintained regular communication with my teammate to track progress and ensure alignment. My goal was to ensure my chat component was prepared for seamless integration with the auth component upon its completion.
+
+However, we encountered a significant hurdle as the auth component faced delays and could not be completed within our tight deadline. This setback highlighted the importance of contingency planning and adaptive strategies in software development.
+
+Reflecting on these challenges post-sprint, I identified key learnings and strategies for future projects:
+
+Effective Project Management: In a professional setting, I would proactively seek assistance from a project manager to realign deadlines and resources, ensuring that critical dependencies are addressed promptly.
+
+Team Support and Collaboration: I learned the value of offering hands-on support to teammates facing challenges. Techniques like pair programming could be a practical approach to tackle complex problems together and keep the project on track.
+
+Adaptability in Technical Choices: Lastly, I realized the importance of flexibility in technical decisions. For instance, instead of building an auth system from scratch under time constraints, utilizing reliable third-party services like Clerk or other up-to-date technologies could expedite development without compromising functionality.
 
 # Technologies Used
 
@@ -24,37 +34,55 @@ We created this project from scratch over the course of a week as part of the Ha
 
 # Demo
 
+Please see this demo (https://recordit.co/ta1D32Surc) of the prototype for the website and the description below.
+
 ## Login and Auth
 
-coming soon . . . .
+![Login-and-Auth](/assets/Screenshot 2024-01-12 at 16.33.34.png)
+
+The login and authentication module provides secure access to user profiles.
 
 ## Workout Planner
 
-coming soon . . . .
+![Workout-Planner](/assets/Screenshot 2024-01-12 at 16.33.34.png)
+
+A dynamic tool for planning and tracking workouts, tailored to individual preferences and goals.
 
 ## Progress Tracker
 
-coming soon . . . .
+![Progress-Tracker](/assets/Screenshot 2024-01-12 at 16.34.21.png)
+
+This feature allows users to monitor their fitness journey and achievements over time.
 
 ## Chat
 
-coming soon . . . .
+![Chat](/assets/Screenshot 2024-01-12 at 16.38.34.png)
+
+An interactive chat component for community engagement and support.
 
 ## Social Feed
 
-coming soon . . . .
+![Social-Feed](/assets/Screenshot 2024-01-12 at 16.38.15.png)
+
+Enables users to share their fitness milestones and experiences with friends and peers.
+
+## AI Chat
+
+![AI-Chat](/assets/Screenshot 2024-01-12 at 16.39.47.png)
+
+Innovative AI-powered feature providing personalized workout suggestions and guidance.
 
 # How to Install and Run this Project
 
 1. Clone the repo to your computer in your desired folder
 
-`git clone git@github.com:Sirius-Sploosh/bo-client.git`
+`git clone git@github.com:meadDashSolomon/strive-life.git`
 
 2. Install all dependencies by running
 
 `npm install`
 
-3. It's time to start your development server! Run
+3. It's time to start your development server and vite server! Run
 
 `npm run dev`
 
@@ -62,11 +90,12 @@ in your command line, and check out the project at localhost:5173 in your browse
 
 # Future Enhancements
 
-Given the extremely tight turnaround we faced and the high standards we hold for ourselves, there are a few things we would love to improve when time allows. Some of these include:
+Given the extremely tight turnaround I faced and the high standards I hold for myself, there are a few things I would love to improve when time allows:
 
 - Robust unit testing
-- Create cohesive styling across pages
-- Integrate video chat with user messaging
+- Optimization testing
+- Oauth
+- Transitioning to a more advanced authentication system like Clerk.
 
 # Ticketing Guidelines
 
