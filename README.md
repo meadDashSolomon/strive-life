@@ -38,39 +38,39 @@ Please see this demo (https://recordit.co/ta1D32Surc) of the prototype for the w
 
 ## Login and Auth
 
-![Login-and-Auth](/assets/Screenshot 2024-01-12 at 16.33.34.png)
+![Login-and-Auth](img/Screenshot_2024-01-12_at_16.33.34.png)
 
-The login and authentication module provides secure access to user profiles.
+The authentication component allows users to securely create an account and provide information about their fitness level to generate a curated user experience.
 
 ## Workout Planner
 
-![Workout-Planner](/assets/Screenshot 2024-01-12 at 16.33.34.png)
+![Workout-Planner](img/assets/Screenshot_2024-01-12_at_16.33.34.png)
 
-A dynamic tool for planning and tracking workouts, tailored to individual preferences and goals.
+The Workout Planner allows users to quickly select a type of workout like lifting weights, cardio, or plyometrics and then receive a list of possible workouts with detailed explanations.
 
 ## Progress Tracker
 
-![Progress-Tracker](/assets/Screenshot 2024-01-12 at 16.34.21.png)
+![Progress-Tracker](img/assets/Screenshot_2024-01-12_at_16.34.21.png)
 
-This feature allows users to monitor their fitness journey and achievements over time.
+The Progress Tracker enables users to monitor their fitness journey. Users can see workouts that they saved in the Planner component as well as search an exercise API for alternative workouts.
 
 ## Chat
 
-![Chat](/assets/Screenshot 2024-01-12 at 16.38.34.png)
+![Chat](img/assets/Screenshot_2024-01-12_at_16.38.34.png)
 
-An interactive chat component for community engagement and support.
+The Chat component serves as a hub for community interaction and support within our fitness app. It allows users to connect by directly messaging one another via the app.
 
 ## Social Feed
 
-![Social-Feed](/assets/Screenshot 2024-01-12 at 16.38.15.png)
+![Social-Feed](img/assets/Screenshot_2024-01-12_at_16.38.15.png)
 
-Enables users to share their fitness milestones and experiences with friends and peers.
+The Social Feed lets users can share their fitness milestones, experiences, and daily activities with friends and peers via posts. Similarly, users can comment on one another's posts.
 
 ## AI Chat
 
-![AI-Chat](/assets/Screenshot 2024-01-12 at 16.39.47.png)
+![AI-Chat](img/assets/Screenshot_2024-01-12_at_16.39.47.png)
 
-Innovative AI-powered feature providing personalized workout suggestions and guidance.
+The AI chat is an innovative feature providing personalized workout suggestions and guidance. Interface with a Chat GPT based personal training assistant with knowledge of your fitness background.
 
 # How to Install and Run this Project
 
