@@ -38,39 +38,39 @@ Please see this demo (https://recordit.co/ta1D32Surc) of the prototype for the w
 
 ## Login and Auth
 
-![Login-and-Auth](imgs/assets/Screenshot_2024-01-12_at_16.33.34.png)
-
 The authentication component allows users to securely create an account and provide information about their fitness level to generate a curated user experience.
+
+![Login-and-Auth](<imgs/assets/Screenshot 2024-01-12 at 16.33.34.png>)
 
 ## Workout Planner
 
-![Workout-Planner](imgs/assets/Screenshot_2024-01-12_at_16.33.34.png)
-
 The Workout Planner allows users to quickly select a type of workout like lifting weights, cardio, or plyometrics and then receive a list of possible workouts with detailed explanations.
+
+![Workout-Planner](<imgs/assets/Screenshot 2024-01-12 at 16.34.21.png>)
 
 ## Progress Tracker
 
-![Progress-Tracker](imgs/assets/Screenshot_2024-01-12_at_16.34.21.png)
-
 The Progress Tracker enables users to monitor their fitness journey. Users can see workouts that they saved in the Planner component as well as search an exercise API for alternative workouts.
+
+![Progress-Tracker](<imgs/assets/Screenshot 2024-01-12 at 16.38.00.png>)
 
 ## Chat
 
-![Chat](imgs/assets/Screenshot_2024-01-12_at_16.38.34.png)
-
 The Chat component serves as a hub for community interaction and support within our fitness app. It allows users to connect by directly messaging one another via the app.
+
+![Chat](<imgs/assets/Screenshot 2024-01-12 at 16.38.34.png>)
 
 ## Social Feed
 
-![Social-Feed](imgs/assets/Screenshot_2024-01-12_at_16.38.15.png)
-
 The Social Feed lets users can share their fitness milestones, experiences, and daily activities with friends and peers via posts. Similarly, users can comment on one another's posts.
+
+![Social-Feed](<imgs/assets/Screenshot 2024-01-12 at 16.38.15.png>)
 
 ## AI Chat
 
-![AI-Chat](imgs/assets/Screenshot_2024-01-12_at_16.39.47.png)
-
 The AI chat is an innovative feature providing personalized workout suggestions and guidance. Interface with a Chat GPT based personal training assistant with knowledge of your fitness background.
+
+![AI-Chat](<imgs/assets/Screenshot 2024-01-12 at 16.39.47.png>)
 
 # How to Install and Run this Project
 
