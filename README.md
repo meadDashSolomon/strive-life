@@ -14,19 +14,17 @@ Strive Life is a fitness tracker and social media site that lets gym goers learn
 
 # Project Description
 
-This project began as an ambitious 1-week sprint to create an MVP for a fitness tracking and social media application. The project was a team effort, aimed at delivering a functional product for an external user. As a part of this team, I was responsible for developing the chat functionality.
+Strive Life Fitness started as a one-week sprint where our team aimed to build a basic version of a fitness and social media app. I was in charge of the chat feature, which depended on another team member's authentication (auth) component. We worked closely, but unfortunately, the auth part wasn't ready in time. This experience taught me a lot about teamwork and flexibility in project management.
 
-During this sprint, my work on the chat feature was closely intertwined with the authentication component, which was handled by another team member. Recognizing the challenge and the importance of collaboration, I maintained regular communication with my teammate to track progress and ensure alignment. My goal was to ensure my chat component was prepared for seamless integration with the auth component upon its completion.
+Post-project, I reflected on the challenges we faced. Here’s what I learned:
 
-However, we encountered a significant hurdle as the auth component faced delays and could not be completed within our tight deadline. This setback highlighted the importance of contingency planning and adaptive strategies in software development.
+Project Management: In similar situations, I'd coordinate with a project manager earlier to ensure all components align, especially those dependent on each other.
 
-Reflecting on these challenges post-sprint, I identified key learnings and strategies for future projects:
+Teamwork: I'd offer more direct help to teammates, like pair programming, to overcome tough challenges together.
 
-Effective Project Management: In a professional setting, I would proactively seek assistance from a project manager to realign deadlines and resources, ensuring that critical dependencies are addressed promptly.
+Technical Flexibility: In the future, I'd consider using established technologies like Clerk for auth solutions, particularly under tight deadlines, to streamline development and maintain quality.
 
-Team Support and Collaboration: I learned the value of offering hands-on support to teammates facing challenges. Techniques like pair programming could be a practical approach to tackle complex problems together and keep the project on track.
-
-Adaptability in Technical Choices: Lastly, I realized the importance of flexibility in technical decisions. For instance, instead of building an auth system from scratch under time constraints, utilizing reliable third-party services like Clerk or other up-to-date technologies could expedite development without compromising functionality.
+This project was a valuable learning opportunity, enhancing my approach to software development and team collaboration.
 
 # Technologies Used
 
